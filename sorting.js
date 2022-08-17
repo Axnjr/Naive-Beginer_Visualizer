@@ -15,7 +15,7 @@ let length_of_array = 0
 class KarleParent extends React.Component{
   constructor(){
     super();
-    this.state={user:12/*prompt("Enter Array Length : Min 2 | Max 9999 ")*/}
+    this.state={user:prompt("Enter Array Length : Min 2 | Max 9999 ")}
   }}
 
 class Karle extends KarleParent{
@@ -71,6 +71,8 @@ class Karle extends KarleParent{
         clearInterval(idq);}
     }
     
+  // Merge Not Completed Yet Work in progress 
+  
     mergeMain = () => {
       var arrleft = []
       var arrright = []
