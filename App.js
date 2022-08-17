@@ -15,7 +15,6 @@ export default function App(){
             </div>
             <Routes>
                 <Route path="/searching" element={<Searching/>}/>
-                <Route path="/reversing" element={<Reverse/>}/>
                 <Route path="/sorting" element={<KarleParent/>}/>
             </Routes>
         </Router>
