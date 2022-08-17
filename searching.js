@@ -11,7 +11,7 @@ let condition = false
 class SearchingParent extends React.Component{
     constructor(){
       super();
-      this.state={user:50/*prompt("Enter Array Length : Min 2 | Max 200 ")*/}
+      this.state={user:prompt("Enter Array Length : Min 2 | Max 200 ")}
     }}
 export class Searching extends SearchingParent{
     constructor(){
