@@ -1,13 +1,11 @@
 import React from "react" ;
 import './App.css';
-import ReactDOM from 'react-dom/client';
-const root = ReactDOM.createRoot(document.getElementById('arraycon'));
+
 
 let a = []
 window.aval = []  // global variable 
 let idb = ''      // global variable for interval ID
 let idq = ''      // global variable for interval ID
-let idm = ''      // global variable for interval ID
 let pivot = []    // for quick sort
 let condition = false
 let length_of_array = 0
@@ -19,6 +17,7 @@ class KarleParent extends React.Component{
   }}
 
 class Karle extends KarleParent{
+  
     constructor() {
         super();
         length_of_array=this.state.user
@@ -26,6 +25,7 @@ class Karle extends KarleParent{
         this.state = {userlen:this.state.user,count:a+',',clicks:1,speed:300}
         window.aval = a
     }
+  
     bubble = () => {
       for(let j=0;j<this.state.clicks;j++){
         setTimeout(()=>{document.getElementById(`${window.aval[j]}`).style.backgroundColor = 'rgb(0, 255, 251)';},this.state.speed)
@@ -38,9 +38,10 @@ class Karle extends KarleParent{
                 this.setState({count: window.aval.toString()})
                 this.setState({color:'white'})}}}
       this.setState({clicks:this.state.clicks+1})
-      if(this.state.clicks == this.state.userlen){
+      if(this.state.clicks === this.state.userlen){
         clearInterval(idb);}
     } 
+  
     quick = () => {
       var arrleft = []
       var arrright = []
@@ -55,7 +56,9 @@ class Karle extends KarleParent{
         else{continue;}
       this.setState({count:arrleft.toString()+","+arrright.toString()})
       }
-    setTimeout(() =>{
+      
+    setTimeout(() =>
+     {
         for(let j=0;j<this.state.clicks;j++){      
           for(let i=0;i<this.state.clicks;i++){ 
             if (arrleft[i]>arrleft[i+1]){  
@@ -67,37 +70,49 @@ class Karle extends KarleParent{
         this.setState({count:arrleft.toString()+','+arrright.toString()})
       },1000)
       this.setState({clicks:this.state.clicks+1})
-      if(this.state.clicks==this.state.userlen){
+      if(this.state.clicks===this.state.userlen){
         clearInterval(idq);}
     }
     
-  // Merge Not Completed Yet Work in progress 
-  
     mergeMain = () => {
-      var arrleft = []
-      var arrright = []
-      let l = this.state.userlen
-      let mid = Math.floor(l/2) 
-
-      function Merge(a){
-        if (a.length>1){
-          for(let i=0;i<mid;i++){
-            arrleft.push(a[i])
-          }
-          for(let j=mid;j<=l;j++){
-            arrright.push(a[j])
-          }
-          Merge(arrleft);
-          Merge(arrright);
+      let idm = setInterval(()=>
+      {
+        for(let i=0;i<this.state.clicks;i++){
+          document.querySelector('.arr'+i).style.backgroundColor = '#333';
         }
-        console.log(arrleft,"left")
-        console.log(arrright,"right")
+        this.setState({clicks:this.state.clicks+1})
+        if(this.state.clicks===this.state.userlen){
+          clearInterval(idm);
+          setTimeout(()=>{
+            this.setState({count:merge_sort(window.aval).toString()})
+          },this.state.speed)
+        }
+      },this.state.speed)
+      
+      function merge_sort(unsortedArray) {
+        const midle_index = unsortedArray.length / 2
+        if(unsortedArray.length < 2){
+          return unsortedArray
+        }
+        const leftArray = unsortedArray.splice(0, midle_index)
+        return mergeArrays(merge_sort(leftArray),merge_sort(unsortedArray))
       }
-      Merge(window.aval)
-      clearInterval(idm)
+      
+      function mergeArrays(leftArray, rightArray) {
+        let ary = []
+        while (leftArray.length && rightArray.length) {
+            if (leftArray[0] < rightArray[0]) {
+                ary.push(leftArray.shift())  
+            } else {
+                ary.push(rightArray.shift())
+            }
+        }
+        return [...ary, ...leftArray, ...rightArray]
+      }
     }
 
-    render(){
+    render()
+    {
       return(
         <div>
           <div>
@@ -109,7 +124,8 @@ class Karle extends KarleParent{
                       )}
                     else{
                     return(
-                      <div id={val} style={{height:val+'mm',width:100/length_of_array+'mm',margin:10/length_of_array+'mm',}} className='arr' key={idx}>
+                      <div id={val} style={{height:val+'mm',width:100/length_of_array+'mm',margin:10/length_of_array+'mm',
+                          backgroundColor:'rgb(0, 255, 251)',textAlign:'center'}} className={'arr'+idx} key={idx}>
                           <p style={{fontSize:10/length_of_array+'cm'}}>{val.toString()}</p>
                       </div>)}             
                   })}
@@ -123,16 +139,16 @@ class Karle extends KarleParent{
                   onChange={(ev) => {this.setState({speed:ev.target.value})}}/>
               <h1 className="number">Speed of Sorting</h1>
               <button style={{marginLeft:'20rem'}} disabled={condition} onClick={(el) => {
-                if(window.aval.length==1){condition=true;}
+                if(window.aval.length===1){condition=true;}
                 else{idb = setInterval(this.bubble,this.state.speed);condition = true}}}>
                 Bubble Sort
               </button>
               <button disabled={condition} onClick={(eo) => {
-                if(window.aval==1){condition=true;}
+                if(window.aval===1){condition=true;}
                 else{idq = setInterval(this.quick,this.state.speed);condition = true}}}>
                 Quick Sort
               </button>
-              <button disabled={condition} onClick={(eu) => {idm = setInterval(this.mergeMain,this.state.speed);condition = true}}>
+              <button disabled={condition} onClick={(eu) => {this.mergeMain();condition = true}}>
                 Merge Sort
               </button>
               <button onClick={()=>{window.location.reload(true)}}>Genearte New Array</button>
